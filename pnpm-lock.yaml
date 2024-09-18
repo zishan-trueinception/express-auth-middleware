@@ -29,6 +29,9 @@ importers:
       mongoose:
         specifier: ^8.0.4
         version: 8.0.4
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
     devDependencies:
       '@types/express':
         specifier: ^4.17.21
@@ -38,7 +41,7 @@ importers:
         version: 4.14.202
       clean-webpack-plugin:
         specifier: ^4.0.0
-        version: 4.0.0(webpack@5.89.0)
+        version: 4.0.0(webpack@5.89.0(webpack-cli@5.1.4))
       nodemon:
         specifier: ^3.0.2
         version: 3.0.2
@@ -47,7 +50,7 @@ importers:
         version: 4.1.5
       ts-loader:
         specifier: ^9.5.1
-        version: 9.5.1(typescript@5.3.3)(webpack@5.89.0)
+        version: 9.5.1(typescript@5.3.3)(webpack@5.89.0(webpack-cli@5.1.4))
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
@@ -1630,6 +1633,9 @@ packages:
   yallist@4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
 
+  zod@3.23.8:
+    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
+
 snapshots:
 
   '@discoveryjs/json-ext@0.5.7': {}
@@ -1835,17 +1841,17 @@ snapshots:
       '@webassemblyjs/ast': 1.11.6
       '@xtuc/long': 4.2.2
 
-  '@webpack-cli/configtest@2.1.1(webpack-cli@5.1.4)(webpack@5.89.0)':
+  '@webpack-cli/configtest@2.1.1(webpack-cli@5.1.4(webpack@5.89.0))(webpack@5.89.0(webpack-cli@5.1.4))':
     dependencies:
       webpack: 5.89.0(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack@5.89.0)
 
-  '@webpack-cli/info@2.0.2(webpack-cli@5.1.4)(webpack@5.89.0)':
+  '@webpack-cli/info@2.0.2(webpack-cli@5.1.4(webpack@5.89.0))(webpack@5.89.0(webpack-cli@5.1.4))':
     dependencies:
       webpack: 5.89.0(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack@5.89.0)
 
-  '@webpack-cli/serve@2.0.5(webpack-cli@5.1.4)(webpack@5.89.0)':
+  '@webpack-cli/serve@2.0.5(webpack-cli@5.1.4(webpack@5.89.0))(webpack@5.89.0(webpack-cli@5.1.4))':
     dependencies:
       webpack: 5.89.0(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack@5.89.0)
@@ -2020,7 +2026,7 @@ snapshots:
 
   chrome-trace-event@1.0.3: {}
 
-  clean-webpack-plugin@4.0.0(webpack@5.89.0):
+  clean-webpack-plugin@4.0.0(webpack@5.89.0(webpack-cli@5.1.4)):
     dependencies:
       del: 4.1.1
       webpack: 5.89.0(webpack-cli@5.1.4)
@@ -2086,6 +2092,7 @@ snapshots:
   debug@4.3.4(supports-color@5.5.0):
     dependencies:
       ms: 2.1.2
+    optionalDependencies:
       supports-color: 5.5.0
 
   define-data-property@1.1.1:
@@ -3116,7 +3123,7 @@ snapshots:
       mkdirp: 1.0.4
       yallist: 4.0.0
 
-  terser-webpack-plugin@5.3.10(webpack@5.89.0):
+  terser-webpack-plugin@5.3.10(webpack@5.89.0(webpack-cli@5.1.4)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.20
       jest-worker: 27.5.1
@@ -3148,7 +3155,7 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  ts-loader@9.5.1(typescript@5.3.3)(webpack@5.89.0):
+  ts-loader@9.5.1(typescript@5.3.3)(webpack@5.89.0(webpack-cli@5.1.4)):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.15.0
@@ -3238,9 +3245,9 @@ snapshots:
   webpack-cli@5.1.4(webpack@5.89.0):
     dependencies:
       '@discoveryjs/json-ext': 0.5.7
-      '@webpack-cli/configtest': 2.1.1(webpack-cli@5.1.4)(webpack@5.89.0)
-      '@webpack-cli/info': 2.0.2(webpack-cli@5.1.4)(webpack@5.89.0)
-      '@webpack-cli/serve': 2.0.5(webpack-cli@5.1.4)(webpack@5.89.0)
+      '@webpack-cli/configtest': 2.1.1(webpack-cli@5.1.4(webpack@5.89.0))(webpack@5.89.0(webpack-cli@5.1.4))
+      '@webpack-cli/info': 2.0.2(webpack-cli@5.1.4(webpack@5.89.0))(webpack@5.89.0(webpack-cli@5.1.4))
+      '@webpack-cli/serve': 2.0.5(webpack-cli@5.1.4(webpack@5.89.0))(webpack@5.89.0(webpack-cli@5.1.4))
       colorette: 2.0.20
       commander: 10.0.1
       cross-spawn: 7.0.3
@@ -3285,10 +3292,11 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.10(webpack@5.89.0)
+      terser-webpack-plugin: 5.3.10(webpack@5.89.0(webpack-cli@5.1.4))
       watchpack: 2.4.0
-      webpack-cli: 5.1.4(webpack@5.89.0)
       webpack-sources: 3.2.3
+    optionalDependencies:
+      webpack-cli: 5.1.4(webpack@5.89.0)
     transitivePeerDependencies:
       - '@swc/core'
       - esbuild
@@ -3337,3 +3345,5 @@ snapshots:
   wrappy@1.0.2: {}
 
   yallist@4.0.0: {}
+
+  zod@3.23.8: {}

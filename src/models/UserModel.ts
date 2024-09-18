@@ -1,43 +1,79 @@
-import argon2 from 'argon2'
-import mongoose, { Schema, Document } from 'mongoose'
+import mongoose, { Document, Schema, Model } from 'mongoose';
+import { z } from 'zod';
 
-export enum Gender {
-	male = 'male',
-	female = 'female',
-	others = 'others',
-}
+// Define Zod schema for validation
+const userSchemaZod = z.object({
+    username: z.string().min(3, "username must be at least 3 characters").max(20, "username must be less than 20 characters"),
+    email: z.string().email("Invalid Email Format").min(6, "email must be at least 6 characters").max(50, "email must be less than 50 characters"),  
+    password: z.string().min(6, "password must be at least 6 characters").max(20, "password must be less than 20 characters"), 
+    address: z.array(z.string()).min(3, "address must be at least 3 characters").max(100, "address must be less than 100 characters"),
+    phone: z.string().min(10, "phone number must be at least 10 characters").max(15, "phone number must be less than 15 characters"),
+    usertype: z.enum(["user", "admin"]),
+    profile: z.string().url().optional(),
+    answer: z.string().min(3, "answer must be at least 3 characters").max(50, "answer must be less than 50 characters"),
+    isVerified: z.boolean().default(false),
+    verifyToken: z.string().nullable(),
+});
 
-export interface UserDocument extends Document {
-	phone: string
-	fullname: string
-	age: number
-	password: string
-	gender: Gender
-}
+// Type for userSchema based on Zod schema
+export type UserZod = z.infer<typeof userSchemaZod>;
 
-interface Methods {
-	comparePassword: (password: string) => Promise<boolean>
-}
+// Interface for user Document
+export interface IUser extends Document, UserZod {}
 
-const schema = new Schema<UserDocument, unknown, Methods>({
-	phone: { type: String, required: true, unique: true },
-	fullname: { type: String, required: true },
-	age: { type: Number },
-	password: { type: String, required: true },
-	gender: { type: String, enum: Object.values(Gender) },
-})
+// Define the Mongoose Schema for User
+const userSchema: Schema = new Schema<IUser>({
+    username: {
+        type: String,
+        required: [true, "username is required"],
+    },
+    email: {
+        type: String,
+        required: [true, "email is required"],
+        unique: true,
+    },
+    password: {
+        type: String,
+        required: [true, "password is required"],
+    },
+    address: {
+        type: [String],  // address is an array of strings
+    },
+    phone: {
+        type: String,
+        required: [true, "phone number is required"],
+    },
+    usertype: {
+        type: String,
+        required: [true, "user type is required"],
+        default: "user",
+        enum: ["user", "admin"],
+    },
+    profile: {
+        type: String,
+        default: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_640.png",
+    },
+    answer: {
+        type: String,
+        required: [true, "answer is required"],
+    },
+    isVerified: {
+        type: Boolean,
+        default: false,
+    },
+    verifyToken: {
+        type: String,
+        default: null,
+    },
+}, 
+{ timestamps: true });
 
-schema.pre('save', async function (next) {
-	if (!this.isModified('password')) next()
+// Function to validate data using Zod
+export const validateUserData = (data: unknown) => {
+    return userSchemaZod.safeParse(data);  // Use Zod schema for validation
+};
 
-	this.password = await argon2.hash(this.password)
-	next()
-})
+// Export the User model
+const User: Model<IUser> = mongoose.model<IUser>('User', userSchema);
 
-schema.methods.comparePassword = async function (password) {
-	return await argon2.verify(this.password, password)
-}
-
-const UserModel = mongoose.model('users', schema)
-
-export default UserModel
+export default User;
